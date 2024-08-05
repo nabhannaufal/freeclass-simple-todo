@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png" />
+    <title>Phincon Academy</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <section class="wrapper">
+      <div class="header"></div>
+      <form class="content" onsubmit="addTodo(event)">
+        <h1>TODO</h1>
+        <input class="input" placeholder="Create a new todo" id="input-todo" />
+        <div class="list-wrapper" id="list"></div>
+        <div class="list-footer">
+          <div id="items-left">0 items left</div>
+          <div id="clear-completed" class="clrCompleted">Clear Completed</div>
+        </div>
+      </form>
+    </section>
+    <script src="./script.js"></script>
+  </body>
+</html>
