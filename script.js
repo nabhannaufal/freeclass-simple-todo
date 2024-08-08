@@ -1,123 +1,36 @@
-// Constants
-const listElement = document.getElementById("list");
-const inputField = document.getElementById("input-todo");
-const itemsLeftElement = document.getElementById("items-left");
-const clearBtn = document.getElementById("clear-completed");
+const todoForm = document.getElementById("todo-form");
+const newTodoInput = document.getElementById("new-todo");
+const todoList = document.getElementById("todo-list");
 
-let todos = [];
+todoForm.addEventListener("submit", function (event) {
+  event.preventDefault(); // Prevent default form submission
 
-// Functions
-// -- ID Generation
-function generateUniqueId() {
-  return crypto.randomUUID();
-}
+  const todoText = newTodoInput.value.trim();
 
-// -- Create Todo element
-function createTodoElement(todo) {
-  const listItem = document.createElement("div");
-  listItem.classList.add("list");
-
-  const checkBox = document.createElement("button");
-  checkBox.type = "button";
-  checkBox.classList.add("checkBox");
-  if (todo.checked) {
-    checkBox.classList.add("checked");
+  if (todoText) {
+    addTodo(todoText);
+    newTodoInput.value = ""; // Clear the input field
   }
-  checkBox.addEventListener("click", () => toggleChecked(todo.id));
+});
 
-  const listText = document.createElement("div");
-  listText.classList.add("list-text");
-  if (todo.checked) {
-    listText.classList.add("completed");
-  }
-  listText.textContent = todo.text;
-  listText.addEventListener("click", () => editTodo(todo.id));
+function addTodo(text) {
+  const li = document.createElement("li");
+  li.innerHTML = `
+    <input type="checkbox"> 
+    <span>${text}</span>
+    <button class="delete">Delete</button>
+  `;
+  todoList.appendChild(li);
 
-  const deleteButton = document.createElement("button");
-  deleteButton.type = "button";
-  deleteButton.classList.add("delete");
-  deleteButton.addEventListener("click", () => deleteTodo(todo.id));
-
-  listItem.appendChild(checkBox);
-  listItem.appendChild(listText);
-  listItem.appendChild(deleteButton);
-
-  return listItem;
+  // Add event listener to checkbox and delete button
+  li.querySelector("input").addEventListener("change", toggleComplete);
+  li.querySelector(".delete").addEventListener("click", deleteTodo);
 }
 
-// -- Rendering Todo Items
-function renderTodo() {
-  listElement.innerHTML = ""; // Clear the list container
-  todos.forEach((todo) => {
-    const listItem = createTodoElement(todo);
-    listElement.appendChild(listItem);
-  });
-
-  updateItemsLeft();
+function toggleComplete(event) {
+  event.target.parentElement.classList.toggle("completed");
 }
 
-// -- Create Todo Item
-function addTodo(event) {
-  event.preventDefault();
-  const text = inputField.value.trim();
-  if (text) {
-    todos.push({ text, checked: false, id: generateUniqueId() });
-    inputField.value = "";
-    renderTodo();
-  }
+function deleteTodo(event) {
+  event.target.parentElement.remove();
 }
-
-// -- Delete Todo Item
-function deleteTodo(todoId) {
-  todos = todos.filter((todo) => todo.id !== todoId);
-  renderTodo();
-}
-
-// -- Toggle Checked State
-function toggleChecked(todoId) {
-  todos = todos.map((todo) => (todo.id === todoId ? { ...todo, checked: !todo.checked } : todo));
-  renderTodo();
-}
-
-// -- Clear Completed
-function clearCompleted() {
-  todos = todos.filter((todo) => !todo.checked);
-  renderTodo();
-}
-
-// -- Edit Todo Item
-function editTodo(todoId) {
-  const todoIndex = todos.findIndex((todo) => todo.id === todoId);
-  const todo = todos[todoIndex];
-  const listItem = listElement.children[todoIndex];
-  const textElement = listItem.querySelector(".list-text");
-
-  const input = document.createElement("input");
-  input.classList.add("edit-input");
-  input.value = todo.text;
-
-  textElement.replaceWith(input);
-  input.focus();
-
-  input.addEventListener("blur", () => {
-    todo.text = input.value;
-    renderTodo();
-  });
-  input.addEventListener("keydown", (event) => {
-    if (event.key === "Enter") {
-      input.blur();
-    }
-  });
-}
-
-// -- Update items left counter
-function updateItemsLeft() {
-  itemsLeftElement.textContent = `${todos.filter((todo) => !todo.checked).length} items left`;
-}
-
-//Event Listener
-document.querySelector("form").addEventListener("submit", addTodo);
-clearBtn.addEventListener("click", clearCompleted);
-
-// Initial Rendering
-renderTodo();
