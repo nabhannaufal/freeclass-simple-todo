@@ -3,13 +3,13 @@ const newTodoInput = document.getElementById("new-todo");
 const todoList = document.getElementById("todo-list");
 
 todoForm.addEventListener("submit", function (event) {
-  event.preventDefault(); // Prevent default form submission
+  event.preventDefault();
 
   const todoText = newTodoInput.value.trim();
 
   if (todoText) {
     addTodo(todoText);
-    newTodoInput.value = ""; // Clear the input field
+    newTodoInput.value = "";
   }
 });
 
@@ -22,7 +22,6 @@ function addTodo(text) {
   `;
   todoList.appendChild(li);
 
-  // Add event listener to checkbox and delete button
   li.querySelector("input").addEventListener("change", toggleComplete);
   li.querySelector(".delete").addEventListener("click", deleteTodo);
 }
