@@ -108,6 +108,7 @@ body {
   width: 20px;
   height: 20px;
   cursor: pointer;
+  background-color: transparent;
   border: 1px solid #494b69;
   border-radius: 50%;
   display: flex;
@@ -132,6 +133,7 @@ body {
   height: 16px;
   border: none;
   color: #9394a4;
+  background-color: transparent;
   background-image: url("/images/icon-cross.svg");
   background-position: center;
   background-repeat: no-repeat;

@@ -1,85 +1,123 @@
+// Constants
+const listElement = document.getElementById("list");
+const inputField = document.getElementById("input-todo");
+const itemsLeftElement = document.getElementById("items-left");
+const clearBtn = document.getElementById("clear-completed");
+
 let todos = [];
 
-const generateUniqueId = () => {
-  return Math.random().toString(36).substring(2, 15) + Math.round(new Date().getTime()).toString(36).substring(2);
-};
+// Functions
+// -- ID Generation
+function generateUniqueId() {
+  return crypto.randomUUID();
+}
 
-const renderTodo = () => {
-  const list = document.getElementById("list");
-  list.innerHTML = "";
+// -- Create Todo element
+function createTodoElement(todo) {
+  const listItem = document.createElement("div");
+  listItem.classList.add("list");
 
+  const checkBox = document.createElement("button");
+  checkBox.type = "button";
+  checkBox.classList.add("checkBox");
+  if (todo.checked) {
+    checkBox.classList.add("checked");
+  }
+  checkBox.addEventListener("click", () => toggleChecked(todo.id));
+
+  const listText = document.createElement("div");
+  listText.classList.add("list-text");
+  if (todo.checked) {
+    listText.classList.add("completed");
+  }
+  listText.textContent = todo.text;
+  listText.addEventListener("click", () => editTodo(todo.id));
+
+  const deleteButton = document.createElement("button");
+  deleteButton.type = "button";
+  deleteButton.classList.add("delete");
+  deleteButton.addEventListener("click", () => deleteTodo(todo.id));
+
+  listItem.appendChild(checkBox);
+  listItem.appendChild(listText);
+  listItem.appendChild(deleteButton);
+
+  return listItem;
+}
+
+// -- Rendering Todo Items
+function renderTodo() {
+  listElement.innerHTML = ""; // Clear the list container
   todos.forEach((todo) => {
-    const div = document.createElement("div");
-    div.className = "list";
-    div.innerHTML = `
-            <div class="checkBox ${todo.checked ? "checked" : ""}" onclick="onCheck('${todo.id}')"></div>
-            <i class="list-text ${todo.checked ? "completed" : ""}" onclick="editTodo('${todo.id}')">${todo.text}</i>
-            <div class="delete" onclick="deleteTodo('${todo.id}')"></div>
-        `;
-    list.appendChild(div);
+    const listItem = createTodoElement(todo);
+    listElement.appendChild(listItem);
   });
 
-  document.getElementById("items-left").innerHTML = `${todos.filter((todo) => !todo.checked).length} items left`;
-};
+  updateItemsLeft();
+}
 
-const addTodo = (e) => {
-  e.preventDefault();
-  const inputField = document.getElementById("input-todo");
+// -- Create Todo Item
+function addTodo(event) {
+  event.preventDefault();
+  const text = inputField.value.trim();
+  if (text) {
+    todos.push({ text, checked: false, id: generateUniqueId() });
+    inputField.value = "";
+    renderTodo();
+  }
+}
 
-  const newTodo = {
-    text: inputField.value,
-    checked: false,
-    id: generateUniqueId(),
-  };
-
-  todos.push(newTodo);
-  inputField.value = "";
-  renderTodo();
-};
-
-const deleteTodo = (todoId) => {
+// -- Delete Todo Item
+function deleteTodo(todoId) {
   todos = todos.filter((todo) => todo.id !== todoId);
   renderTodo();
-};
+}
 
-const onCheck = (todoId) => {
-  todos = todos.map((todo) => {
-    if (todo.id === todoId) {
-      todo.checked = !todo.checked;
-    }
-    return todo;
-  });
+// -- Toggle Checked State
+function toggleChecked(todoId) {
+  todos = todos.map((todo) => (todo.id === todoId ? { ...todo, checked: !todo.checked } : todo));
   renderTodo();
-};
+}
 
-const clearCompleted = () => {
+// -- Clear Completed
+function clearCompleted() {
   todos = todos.filter((todo) => !todo.checked);
   renderTodo();
-};
+}
 
-const clearBtn = document.getElementById("clear-completed");
-clearBtn.onclick = clearCompleted;
-
-const editTodo = (todoId) => {
+// -- Edit Todo Item
+function editTodo(todoId) {
   const todoIndex = todos.findIndex((todo) => todo.id === todoId);
   const todo = todos[todoIndex];
-  const list = document.getElementById("list");
-  const todoDiv = list.children[todoIndex];
+  const listItem = listElement.children[todoIndex];
+  const textElement = listItem.querySelector(".list-text");
 
   const input = document.createElement("input");
-  input.className = "edit-input";
+  input.classList.add("edit-input");
   input.value = todo.text;
-  input.onblur = () => {
+
+  textElement.replaceWith(input);
+  input.focus();
+
+  input.addEventListener("blur", () => {
     todo.text = input.value;
     renderTodo();
-  };
-  input.onkeydown = (e) => {
-    if (e.key === "Enter") {
-      todo.text = input.value;
-      renderTodo();
+  });
+  input.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+      input.blur();
     }
-  };
+  });
+}
 
-  todoDiv.replaceChild(input, todoDiv.querySelector(".list-text"));
-  input.focus();
-};
+// -- Update items left counter
+function updateItemsLeft() {
+  itemsLeftElement.textContent = `${todos.filter((todo) => !todo.checked).length} items left`;
+}
+
+//Event Listener
+document.querySelector("form").addEventListener("submit", addTodo);
+clearBtn.addEventListener("click", clearCompleted);
+
+// Initial Rendering
+renderTodo();
