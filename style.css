@@ -20,6 +20,11 @@ h1 {
   margin-bottom: 20px;
 }
 
+#todo-form {
+  display: flex;
+  align-items: center;
+}
+
 input[type="text"] {
   width: calc(100% - 100px);
   padding: 10px;
@@ -38,11 +43,6 @@ button[type="submit"] {
   margin-left: 10px;
 }
 
-#todo-form {
-  display: flex;
-  align-items: center;
-}
-
 ul {
   list-style: none;
   padding: 0;
@@ -54,4 +54,43 @@ li {
   padding: 15px;
   border-bottom: 1px solid #eee;
   background-color: #fafafa;
+}
+
+.delete {
+  margin-left: auto;
+  background: none;
+  border: none;
+  color: #9394a4;
+  cursor: pointer;
+}
+
+.delete:hover {
+  color: red;
+}
+
+li.completed {
+  background-color: #f0f0f0;
+}
+
+li.completed span {
+  text-decoration: line-through;
+}
+
+input[type="checkbox"] {
+  margin-right: 10px;
+  width: 20px;
+  height: 20px;
+  accent-color: #8181f7;
+}
+
+.edit {
+  margin-right: 10px;
+  background: none;
+  border: none;
+  color: #9394a4;
+  cursor: pointer;
+}
+
+.edit:hover {
+  color: blue;
 }
