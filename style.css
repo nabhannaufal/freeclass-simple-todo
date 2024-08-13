@@ -82,3 +82,15 @@ input[type="checkbox"] {
   height: 20px;
   accent-color: #8181f7;
 }
+
+.edit {
+  margin-right: 10px;
+  background: none;
+  border: none;
+  color: #9394a4;
+  cursor: pointer;
+}
+
+.edit:hover {
+  color: blue;
+}

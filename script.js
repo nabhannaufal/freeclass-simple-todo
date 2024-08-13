@@ -19,12 +19,14 @@ function addTodo(text) {
   <input type="checkbox"> 
   <span>${text}</span>
   <button class="delete">Delete</button>
+  <button class="edit">Edit</button>
   `;
 
   todoList.appendChild(li);
 
   li.querySelector(".delete").addEventListener("click", deleteTodo);
   li.querySelector("input").addEventListener("change", toggleComplete);
+  li.querySelector(".edit").addEventListener("click", editTodo);
 }
 
 function deleteTodo(event) {
@@ -33,4 +35,16 @@ function deleteTodo(event) {
 
 function toggleComplete(event) {
   event.target.parentElement.classList.toggle("completed");
+}
+
+function editTodo(event) {
+  const li = event.target.parentElement;
+  const span = li.querySelector("span");
+  const currentText = span.textContent;
+
+  const newText = prompt("Edit todo:", currentText);
+
+  if (newText !== null && newText.trim() !== "") {
+    span.textContent = newText;
+  }
 }
