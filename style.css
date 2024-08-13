@@ -1,7 +1,7 @@
 body {
-  font-family: "Josefin Sans", sans-serif;
+  font-family: sans-serif, Arial, Helvetica;
   background-color: #e4e5f1;
-  display: flex; /* Center the container */
+  display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
@@ -11,8 +11,8 @@ body {
   width: 400px;
   background-color: #fff;
   padding: 30px;
-  border-radius: 10px; /* Rounded corners */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 h1 {
@@ -21,8 +21,8 @@ h1 {
 }
 
 #todo-form {
-  display: flex; /* Use flexbox for layout */
-  align-items: center; /* Align items vertically */
+  display: flex;
+  align-items: center;
 }
 
 input[type="text"] {
@@ -35,7 +35,7 @@ input[type="text"] {
 button[type="submit"] {
   width: 100px;
   padding: 10px 20px;
-  background-color: #8181f7; /* Accent color */
+  background-color: #8181f7;
   color: white;
   border: none;
   border-radius: 5px;
@@ -52,23 +52,12 @@ li {
   display: flex;
   align-items: center;
   padding: 15px;
-  border-bottom: 1px solid #eee; /* Divider between todos */
-  background-color: #fafafa; /* Light background */
-}
-
-li.completed {
-  background-color: #f0f0f0; /* Lighter background for completed */
-}
-
-input[type="checkbox"] {
-  margin-right: 10px;
-  width: 20px;
-  height: 20px;
-  accent-color: #8181f7; /* Custom checkbox color */
+  border-bottom: 1px solid #eee;
+  background-color: #fafafa;
 }
 
 .delete {
-  margin-left: auto; /* Push delete button to the right */
+  margin-left: auto;
   background: none;
   border: none;
   color: #9394a4;
@@ -77,4 +66,19 @@ input[type="checkbox"] {
 
 .delete:hover {
   color: red;
+}
+
+li.completed {
+  background-color: #f0f0f0;
+}
+
+li.completed span {
+  text-decoration: line-through;
+}
+
+input[type="checkbox"] {
+  margin-right: 10px;
+  width: 20px;
+  height: 20px;
+  accent-color: #8181f7;
 }

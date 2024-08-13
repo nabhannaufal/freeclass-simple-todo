@@ -16,20 +16,21 @@ todoForm.addEventListener("submit", function (event) {
 function addTodo(text) {
   const li = document.createElement("li");
   li.innerHTML = `
-    <input type="checkbox"> 
-    <span>${text}</span>
-    <button class="delete">Delete</button>
+  <input type="checkbox"> 
+  <span>${text}</span>
+  <button class="delete">Delete</button>
   `;
+
   todoList.appendChild(li);
 
-  li.querySelector("input").addEventListener("change", toggleComplete);
   li.querySelector(".delete").addEventListener("click", deleteTodo);
-}
-
-function toggleComplete(event) {
-  event.target.parentElement.classList.toggle("completed");
+  li.querySelector("input").addEventListener("change", toggleComplete);
 }
 
 function deleteTodo(event) {
   event.target.parentElement.remove();
+}
+
+function toggleComplete(event) {
+  event.target.parentElement.classList.toggle("completed");
 }
